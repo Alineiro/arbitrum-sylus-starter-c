@@ -24,7 +24,7 @@ const publicClient = createPublicClient({
 })
 
 // https://sepolia.arbiscan.io/address/const CONTRACT_ADDRESS = "0x46be8751225be83d7a9b97fec0214c53795d8477"
-const CONTRACT_ADDRESS = "0xa46d9c1ee08938525462349e0296ffff05057cc7"
+const CONTRACT_ADDRESS = "0x97177ee51e9708081c5d741c6b229812362888d4"
 
 async function register() {
     //const rawName = stringToBytes("Name", { size: 32 }); // Convert string to raw bytes

@@ -53,14 +53,22 @@ uint8_t* get_sender() {
     return sender;
 }
 
-// Construct and return a success result
 ArbResult _return_success_bebi32(uint8_t *retval) {
+    return (ArbResult){
+        .status = Success,
+        .output = retval,
+        .output_len = 32,
+    };
+}
+
+// Construct and return a success result
+/*ArbResult _return_success_bebi32(uint8_t *retval) {
     ArbResult res;
     res.status = Success;
     res.output = retval;
     res.output_len = 32;
     return res;
-}
+}*/
 
 // Register a developer (stores their address as the key and name as the value)
 ArbResult register_developer(uint8_t *input, size_t len) {
