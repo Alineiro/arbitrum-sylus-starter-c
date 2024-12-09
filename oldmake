@@ -1,8 +1,8 @@
 STACK_SIZE=1024
 CC=clang
 LD=wasm-ld
-CFLAGS=-Iinclude/ -Istylus-sdk-c/include --target=wasm32 -Os --no-standard-libraries -mbulk-memory -Wall -g -Wno-incompatible-function-pointer-types
-LDFLAGS=-O2 --no-entry --stack-first -z stack-size=$(STACK_SIZE)
+CFLAGS=-Iinclude/ -Istylus-sdk-c/include --target=wasm32 --no-standard-libraries -mbulk-memory -Wall -g -Wno-incompatible-function-pointer-types
+LDFLAGS= --no-entry --stack-first -z stack-size=$(STACK_SIZE)
 
 NAME = contract.wasm
 C_FILES = $(wildcard contracts/*.c) $(wildcard stylus-sdk-c/src/*.c)
