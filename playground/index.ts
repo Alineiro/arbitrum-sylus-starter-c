@@ -24,7 +24,7 @@ const publicClient = createPublicClient({
 })
 
 // https://sepolia.arbiscan.io/address/const CONTRACT_ADDRESS = "0x46be8751225be83d7a9b97fec0214c53795d8477"
-const CONTRACT_ADDRESS = "0x81f518c229ac784674b0f4492e0f5bba78c720ca"
+const CONTRACT_ADDRESS = "0x29fd053e5c0b4d8829a8420b8c95ef9ac055084b"
 
 async function register() {
     const result = await client.writeContract({
@@ -39,7 +39,8 @@ async function register() {
 
 async function submit() {
     const developerAddress = "0xaB55FD34340b5e8fEE8615690431649046fE135b";
-    const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeaaeee";
+    const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeabbbb";
+    //Same appHash cannot be submitted multiple times
 
     const nonce = await publicClient.getTransactionCount({ address: developerAddress });
     const result = await client.writeContract({
