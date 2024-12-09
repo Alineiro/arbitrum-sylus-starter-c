@@ -28,7 +28,7 @@ $(NAME): contract_unstripped.wasm
 # cargo stylus check --wasm-file ./contract.wasm -e https://sepolia-rollup.arbitrum.io/rpc
 
 # Step 5: deploy the wasm using cargo-stylus
-# cargo stylus deploy --wasm-file ./contract.wasm -e https://sepolia-rollup.arbitrum.io/rpc --cargo-stylus-version 0.5.3 --private-key dd56b55bbcf9748b4d9dae84f66198b24d365088a138116f9e454442446f4766
+# cargo stylus deploy --wasm-file ./contract.wasm -e https://sepolia-rollup.arbitrum.io/rpc --cargo-stylus-version 0.5.3 --private-key PRIVATE_KEY 
 
 clean:
 	@rm $(OBJECTS) contract_unstripped.wasm contract.wasm

@@ -24,15 +24,13 @@ const publicClient = createPublicClient({
 })
 
 // https://sepolia.arbiscan.io/address/const CONTRACT_ADDRESS = "0x46be8751225be83d7a9b97fec0214c53795d8477"
-const CONTRACT_ADDRESS = "0x79ce7d55484abcce4de701071cbbdcc117526709"
+const CONTRACT_ADDRESS = "0x81f518c229ac784674b0f4492e0f5bba78c720ca"
 
 async function register() {
-    //const rawName = stringToBytes("Name", { size: 32 }); // Convert string to raw bytes
     const result = await client.writeContract({
         abi: ABI,
         address: CONTRACT_ADDRESS,
         functionName: "register_developer",
-        //args: [rawName],
     });
 
     console.debug(`Developer registered: ${result}`);
@@ -49,17 +47,14 @@ async function submit() {
         address: CONTRACT_ADDRESS,
         functionName: "submit_app_hash",
         args: [developerAddress, appHash],
-	nonce: nonce + 1,
+	nonce: nonce + 1,	//Weird bug, current nonce isn't synced, it's always 1 less, so +1 fixes it
     });
 
     console.debug(`App hash submitted: ${result}`);
     return result;
-    //return appHash; // Return the appHash so it can be used by verify()
 }
 
 async function verify(newAppHash) {
-    //const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeaaeee";
-    //const developerAddress = "0xaB55FD34340b5e8fEE8615690431649046fE135b";
 
     const result = await publicClient.readContract({
         abi: ABI,
@@ -68,8 +63,6 @@ async function verify(newAppHash) {
         args: [newAppHash],
     });
 
-    //console.debug(`Val of newapphash: ${newAppHash}`);
-    //console.debug(`Val of dev: ${registeredDev}`);
     console.debug(`Verification result: ${result}`);
 }
 
@@ -81,36 +74,3 @@ async function testContract() {
 
 testContract().catch(console.error);
 
-
-//register()
-//submit()
-//verify()
-
-/*async function write() {
-  const result = await client.writeContract({
-    abi: ABI,
-    address: CONTRACT_ADDRESS,
-    functionName: "register_developer",
-    //functionName: "set_value",
-    args: ["Devname"],
-  })
-
-  console.debug(`Contract: ${result}`)
-}
-
-async function read() {
-  const result = await publicClient.readContract({
-    abi: ABI,
-    address: CONTRACT_ADDRESS,
-    functionName: "verify_app_hash",
-    args: ["0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"],
-    //functionName: "submit_app_hash",
-    //functionName: "register_developer",
-    //functionName: "dumbtest",
-  })
-
-  console.debug(`Contract: ${result}`)
-}*/
-
-//read()
-//write()

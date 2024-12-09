@@ -1,13 +1,3 @@
-//LIST OF ERRORS AND IMPROVEMENTS
-//
-//CANNOT PASS NAME TO REGISTER_DEVELOPER, ALWAYS RETURNS INPUT TOO LONG
-//MAYBE DUE TO THAT, THE SAME ADDRESS CAN BE REGISTERED AS DEV MULTIPLE TIMES
-//NEED TO CHECK IF DEVS ARE STORED CORRECTLY
-//NEED TO ADD 1 TO NONCE COUNT IN PLAYGROUND TO FIX INCORRECT NONCE ISSUE
-//VERIFY_APP_HASH FUNCTION DOESNT WORK CORRECTLY, SHOULD RETURN DEVELOPER ADDRESS, RETURNS EMPTY ADDRESS
-//
-//COULD PROPERLY ADD STORAGE, SO THAT EACH DEV CAN SUBMIT MULTIPLE APPS, AND THEIR SUBMITTED APPS CAN BE CHECKED
-
 #include "../include/stylus_sdk.h"
 #include "../stylus-sdk-c/include/hostio.h"
 #include "../stylus-sdk-c/include/stylus_utils.h"
@@ -28,24 +18,11 @@ void storage_combine_keys(uint8_t *base, uint8_t *suffix, uint8_t *output) {
     }
 }
 
-/*
-void truncate_to_20_bytes(uint8_t *input, uint8_t *output) {
-    memcpy(output, input, 20); // Copy only the first 20 bytes
-}
-*/
-
 // Helper function to generate a key for app hashes
 void generate_app_key(uint8_t *appHash, uint8_t *output) {
   // Combine the base slot with the hash to create a unique key
   storage_combine_keys((uint8_t *)STORAGE_SLOT__appHashes, appHash, output);
 }
-
-/*
-uint8_t* get_sender() {
-    static uint8_t sender[20] = {0x01, 0x02, 0x03}; // Mock sender address (20 bytes)
-    return sender;
-}
-*/
 
 // Mock implementation to get the sender address
 uint8_t* get_sender() {
@@ -63,31 +40,22 @@ ArbResult _return_success_bebi32(uint8_t *retval) {
 
 // Register a developer (stores their address as the key and name as the value)
 ArbResult register_developer(uint8_t *input, size_t len) {
-  if (len > 32) {
-    return _return_short_string(Failure, "InputTooLong");
-  }
 
   uint8_t *developer_address = get_sender(); // Get the caller's address
-  //uint8_t developer_address[20];
-  //truncate_to_20_bytes(get_sender(), developer_address);
   uint8_t slot[32];
   storage_combine_keys((uint8_t *)STORAGE_SLOT__developers, developer_address, slot);
 
-  // Check if already registered
+  // Check if already registered (doesn't work, can re-register addresses)
   storage_load_bytes32(slot, buf_out);
   if (!bebi32_is_zero(buf_out)) {
     return _return_short_string(Failure, "AlreadyRegistered");
   }
 
-  // Register developer by storing their name
-  storage_cache_bytes32(slot, input);
-  storage_flush_cache(false);
-
   return _return_short_string(Success, "Registered");
 }
 
 ArbResult submit_app_hash(uint8_t *input, size_t len) {
-    if (len != 64) {
+    if (len != 64) {		//Error triggers when re-registering app (instead of HashExists)
         return _return_short_string(Failure, "InvalidInputLength");
     }
 
@@ -129,11 +97,8 @@ ArbResult verify_app_hash(uint8_t *input, size_t len) {
 
   // Load the developer address linked to the app hash
   storage_load_bytes32(slot, buf_out);
-  //if (bebi32_is_zero(buf_out)) {
-  //  return _return_short_string(Failure, "NotFound");
-  //}
 
-  // Return the developer address
+  // Return the developer address (Doesn't work properly return other address)
   return _return_success_bebi32(slot);
 }
 
