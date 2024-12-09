@@ -61,15 +61,6 @@ ArbResult _return_success_bebi32(uint8_t *retval) {
     };
 }
 
-// Construct and return a success result
-/*ArbResult _return_success_bebi32(uint8_t *retval) {
-    ArbResult res;
-    res.status = Success;
-    res.output = retval;
-    res.output_len = 32;
-    return res;
-}*/
-
 // Register a developer (stores their address as the key and name as the value)
 ArbResult register_developer(uint8_t *input, size_t len) {
   if (len > 32) {
@@ -130,8 +121,11 @@ ArbResult verify_app_hash(uint8_t *input, size_t len) {
     return _return_short_string(Failure, "InvalidHashLength");
   }
 
+  uint8_t app_hash[32];
   uint8_t slot[32];
-  generate_app_key(input, slot);
+
+  memcpy(app_hash, input + 32, 32);
+  generate_app_key(app_hash, slot);
 
   // Load the developer address linked to the app hash
   storage_load_bytes32(slot, buf_out);
@@ -140,7 +134,7 @@ ArbResult verify_app_hash(uint8_t *input, size_t len) {
   //}
 
   // Return the developer address
-  return _return_success_bebi32(buf_out);
+  return _return_success_bebi32(slot);
 }
 
 // Handler to route function calls

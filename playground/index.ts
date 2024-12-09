@@ -24,7 +24,7 @@ const publicClient = createPublicClient({
 })
 
 // https://sepolia.arbiscan.io/address/const CONTRACT_ADDRESS = "0x46be8751225be83d7a9b97fec0214c53795d8477"
-const CONTRACT_ADDRESS = "0x97177ee51e9708081c5d741c6b229812362888d4"
+const CONTRACT_ADDRESS = "0x79ce7d55484abcce4de701071cbbdcc117526709"
 
 async function register() {
     //const rawName = stringToBytes("Name", { size: 32 }); // Convert string to raw bytes
@@ -41,7 +41,7 @@ async function register() {
 
 async function submit() {
     const developerAddress = "0xaB55FD34340b5e8fEE8615690431649046fE135b";
-    const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeaaebd";
+    const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeaaeee";
 
     const nonce = await publicClient.getTransactionCount({ address: developerAddress });
     const result = await client.writeContract({
@@ -53,12 +53,12 @@ async function submit() {
     });
 
     console.debug(`App hash submitted: ${result}`);
-    return appHash;
+    return result;
     //return appHash; // Return the appHash so it can be used by verify()
 }
 
 async function verify(newAppHash) {
-    //const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeaaebd";
+    //const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeaaeee";
     //const developerAddress = "0xaB55FD34340b5e8fEE8615690431649046fE135b";
 
     const result = await publicClient.readContract({
@@ -68,7 +68,7 @@ async function verify(newAppHash) {
         args: [newAppHash],
     });
 
-    console.debug(`Val of newapphash: ${newAppHash}`);
+    //console.debug(`Val of newapphash: ${newAppHash}`);
     //console.debug(`Val of dev: ${registeredDev}`);
     console.debug(`Verification result: ${result}`);
 }
