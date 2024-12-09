@@ -39,7 +39,7 @@ async function register() {
 
 async function submit() {
     const developerAddress = "0xaB55FD34340b5e8fEE8615690431649046fE135b";
-    const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdeabbbb";
+    const appHash = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdebadbb";
     //Same appHash cannot be submitted multiple times
 
     const nonce = await publicClient.getTransactionCount({ address: developerAddress });
